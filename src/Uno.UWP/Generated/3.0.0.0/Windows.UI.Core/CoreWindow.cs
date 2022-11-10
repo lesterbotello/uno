@@ -237,8 +237,8 @@ namespace Windows.UI.Core
 			}
 		}
 		#endif
-		#if __ANDROID__ || false || NET461 || __WASM__ || false || __NETSTD_REFERENCE__ || __MACOS__
-		[global::Uno.NotImplemented("__ANDROID__", "NET461", "__WASM__", "__NETSTD_REFERENCE__", "__MACOS__")]
+		#if false || false || NET461 || __WASM__ || false || __NETSTD_REFERENCE__ || false
+		[global::Uno.NotImplemented("__ANDROID__", "NET461", "__WASM__", "__NETSTD_REFERENCE__")]
 		public  event global::Windows.Foundation.TypedEventHandler<global::Windows.UI.Core.CoreWindow, global::Windows.UI.Core.KeyEventArgs> KeyDown
 		{
 			[global::Uno.NotImplemented("__ANDROID__", "NET461", "__WASM__", "__NETSTD_REFERENCE__", "__MACOS__")]
@@ -253,8 +253,8 @@ namespace Windows.UI.Core
 			}
 		}
 		#endif
-		#if __ANDROID__ || false || NET461 || __WASM__ || false || __NETSTD_REFERENCE__ || __MACOS__
-		[global::Uno.NotImplemented("__ANDROID__", "NET461", "__WASM__", "__NETSTD_REFERENCE__", "__MACOS__")]
+		#if false || false || NET461 || __WASM__ || false || __NETSTD_REFERENCE__ || false
+		[global::Uno.NotImplemented("__ANDROID__", "NET461", "__WASM__", "__NETSTD_REFERENCE__")]
 		public  event global::Windows.Foundation.TypedEventHandler<global::Windows.UI.Core.CoreWindow, global::Windows.UI.Core.KeyEventArgs> KeyUp
 		{
 			[global::Uno.NotImplemented("__ANDROID__", "NET461", "__WASM__", "__NETSTD_REFERENCE__", "__MACOS__")]
