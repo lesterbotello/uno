@@ -24,7 +24,6 @@ namespace Windows.UI.Xaml.Controls
 #if NETFX_CORE || XAMARIN
 			instance.Orientation = orientation;
 #endif
-
 			return instance;
 		}
 	}

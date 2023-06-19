@@ -205,5 +205,7 @@ namespace Windows.UI.Xaml.Controls
 		partial void UpdateBorder();
 
 		internal override bool IsViewHit() => Border.IsViewHitImpl(this);
+
+		private protected UIElementCollection GetUnsortedChildren() => Children;
 	}
 }
