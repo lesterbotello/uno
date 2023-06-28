@@ -1,4 +1,5 @@
 parameters:
+  benchmarksPool: ''
   vmImage: ''
 
 jobs:
@@ -188,6 +189,15 @@ jobs:
         UITEST_RUNTIME_TEST_GROUP_COUNT: 3
 
   pool:
+    name: $[
+      replace(
+        replace(
+          eq(variables['UITEST_AUTOMATED_GROUP'], 'Benchmarks'),
+          True,
+          ${{ parameters.benchmarksPool }}),
+        False,
+        '')
+      ]
     vmImage: ${{ parameters.vmImage }}
 
   variables:
