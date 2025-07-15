@@ -29,11 +29,11 @@ namespace SamplesApp.UITests.Microsoft_UI_Xaml_Controls.NumberBoxTests
 			var downButton = numBox.Descendant().Marked("DownSpinButton");
 
 			Console.WriteLine("Assert that up button increases value by 1");
-			upButton.FastTap();
+			upButton.Tap();
 			Assert.AreEqual(1, numBox.GetDependencyPropertyValue<double>("Value"));
 
 			Console.WriteLine("Assert that down button decreases value by 1");
-			downButton.FastTap();
+			downButton.Tap();
 			Assert.AreEqual(0, numBox.GetDependencyPropertyValue<double>("Value"));
 
 			Console.WriteLine("Change SmallChange value to 5");
@@ -41,26 +41,26 @@ namespace SamplesApp.UITests.Microsoft_UI_Xaml_Controls.NumberBoxTests
 			smallChangeNumBox.SetDependencyPropertyValue("Text", "5");
 
 			Console.WriteLine("Assert that up button increases value by 5");
-			upButton.FastTap();
+			upButton.Tap();
 			Assert.AreEqual(5, numBox.GetDependencyPropertyValue<double>("Value"));
 
-			_app.FastTap("MinCheckBox");
-			_app.FastTap("MaxCheckBox");
+			_app.Tap("MinCheckBox");
+			_app.Tap("MaxCheckBox");
 
 			numBox.SetDependencyPropertyValue("Value", "100");
-			_app.FastTap("WrapCheckBox");
+			_app.Tap("WrapCheckBox");
 
 			Console.WriteLine("Assert that when wrapping is on, and value is at max, clicking the up button wraps to the min value.");
-			upButton.FastTap();
+			upButton.Tap();
 			Assert.AreEqual(0, numBox.GetDependencyPropertyValue<double>("Value"));
 
 			Console.WriteLine("Assert that when wrapping is on, clicking the down button wraps to the max value.");
-			downButton.FastTap();
+			downButton.Tap();
 			Assert.AreEqual(100, numBox.GetDependencyPropertyValue<double>("Value"));
 
 			Console.WriteLine("Assert that incrementing after typing in a value validates the text first.");
 			EnterTextInNumberBox(numBox, "50");
-			upButton.FastTap();
+			upButton.Tap();
 			Assert.AreEqual(55, numBox.GetDependencyPropertyValue<double>("Value"));
 		}
 

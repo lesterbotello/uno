@@ -33,30 +33,23 @@ internal class InternalClient : Android.Webkit.WebViewClient
 		_nativeWebViewWrapper = webViewWrapper;
 	}
 
-	private bool IsAnchorNavigation(string url) => WebViewUtils.IsAnchorNavigation(_lastNavigationUrl, url);
-
 	public override void DoUpdateVisitedHistory(Android.Webkit.WebView view, string url, bool isReload)
 	{
+		System.Diagnostics.Debug.WriteLine($"InternalClient.DoUpdateVisitedHistory: Started method execution for URL '{url}'");
+
 		base.DoUpdateVisitedHistory(view, url, isReload);
 
 		_nativeWebViewWrapper.DocumentTitle = view.Title;
 
 		_nativeWebViewWrapper.RefreshHistoryProperties();
 
-		// Ensure Source is updated before raising HistoryChanged for proper anchor navigation
-		if (!_nativeWebViewWrapper._wasLoadedFromString && !string.IsNullOrEmpty(url))
-		{
-			_coreWebView.Source = url;
-			_coreWebView.RaiseHistoryChanged();
+		_coreWebView.Source = url;
+		_coreWebView.RaiseHistoryChanged();
 
-			if (!IsAnchorNavigation(url) && !_navigationCompletedRaised)
-			{
-				var uri = new Uri(url);
-				_coreWebView.RaiseNavigationCompleted(uri, true, 200, CoreWebView2WebErrorStatus.Unknown, shouldSetSource: true);
-				_navigationCompletedRaised = true;
-				_lastNavigationUrl = url;
-			}
-		}
+		var uri = new Uri(url);
+		_coreWebView.RaiseNavigationCompleted(uri, true, 200, CoreWebView2WebErrorStatus.Unknown, shouldSetSource: true);
+		_navigationCompletedRaised = true;
+		_lastNavigationUrl = url;
 	}
 
 #pragma warning disable CS0672 // Member overrides obsolete member
@@ -69,43 +62,11 @@ internal class InternalClient : Android.Webkit.WebViewClient
 			return true;
 		}
 
-		// Don't raise NavigationStarting for anchor navigation
-		if (IsAnchorNavigation(url))
-		{
-			return false;
-		}
+		 // Always raise NavigationStarting, even for anchor navigation
+		_coreWebViewSuccess = true;
+		_navigationCompletedRaised = false;
 
-		// For navigation starting events, ensure we use the proper URI format
-		// Convert data URIs back to file URIs when appropriate
-		object navigationData = url;
-		if (url.StartsWith("data:text/html;charset=utf-8;base64,", StringComparison.OrdinalIgnoreCase))
-		{
-			try
-			{
-				// Try to decode the base64 content to see if it contains a file URI
-				var base64 = url.Substring("data:text/html;charset=utf-8;base64,".Length);
-				var content = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(base64));
-
-				// If the decoded content looks like a file URI, use it instead
-				if (content.StartsWith("file:///", StringComparison.OrdinalIgnoreCase))
-				{
-					navigationData = new Uri(content);
-				}
-			}
-			catch
-			{
-				// If decoding fails, stick with the original URL
-				this.Log().Warn($"Failed to decode base64 content from URL: {url}. Using original URL for navigation.");
-			}
-		}
-		else
-		{
-			navigationData = new Uri(url);
-		}
-
-		_coreWebView.RaiseNavigationStarting(navigationData, out var cancel);
-
-		return cancel;
+		return false;
 	}
 
 	public override void OnPageStarted(Android.Webkit.WebView view, string url, Bitmap favicon)

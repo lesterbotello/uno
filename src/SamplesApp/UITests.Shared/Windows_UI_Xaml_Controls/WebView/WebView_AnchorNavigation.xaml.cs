@@ -1,6 +1,8 @@
 ﻿using System;
 using Uno.UI.Samples.Controls;
 using Microsoft.UI.Xaml.Controls;
+using Uno.Extensions;
+using Uno.Logging;
 
 namespace Uno.UI.Samples.Content.UITests.WebView
 {
@@ -19,11 +21,13 @@ namespace Uno.UI.Samples.Content.UITests.WebView
 		private void WebView_NavigationStarting(Microsoft.UI.Xaml.Controls.WebView sender, WebViewNavigationStartingEventArgs args)
 		{
 			NavigationStartingTextBlock.Text = args.Uri.AbsoluteUri;
+			System.Diagnostics.Debug.WriteLine($"WebView_AnchorNavigation: URI for Navigation Started: {args.Uri.AbsoluteUri}");
 		}
 
 		private void WebView_NavigationCompleted(Microsoft.UI.Xaml.Controls.WebView sender, WebViewNavigationCompletedEventArgs args)
 		{
 			NavigationCompletedTextBlock.Text = args.Uri.AbsoluteUri;
+			System.Diagnostics.Debug.WriteLine($"WebView_AnchorNavigation: URI for Navigation Completed: {args.Uri.AbsoluteUri}");
 		}
 
 		private void ButtonClicked()
@@ -33,7 +37,8 @@ namespace Uno.UI.Samples.Content.UITests.WebView
 
 		private void OnClickAnchor()
 		{
-			_ = webView.InvokeScriptAsync("document.querySelector(\"a[href =\\\"#page-4\\\"]\").click()", null);
+			var uri = new Uri(webView.Source, "#page-4");
+			webView.Source = uri;
 		}
 	}
 }
